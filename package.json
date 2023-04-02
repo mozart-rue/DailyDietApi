@@ -20,10 +20,16 @@
   "devDependencies": {
     "@rocketseat/eslint-config": "^1.2.0",
     "eslint": "^8.37.0",
+    "prisma": "^4.12.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "@types/node": "^18.15.11"
+    "@prisma/client": "^4.12.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/node": "^18.15.11",
+    "bcrypt": "^5.1.0",
+    "fastify": "^4.15.0",
+    "zod": "^3.21.4"
   }
 }
