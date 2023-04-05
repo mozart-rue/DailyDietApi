@@ -46,4 +46,30 @@ export async function Meals(app: FastifyInstance) {
 
     return res.status(201).send();
   });
+
+  app.get("/all", async (req, res) => {
+    const userIdHeaderSchema = z.object({
+      user_id: z.string(),
+    });
+
+    const { user_id } = userIdHeaderSchema.parse(req.headers);
+
+    const user = await prisma.user.findFirst({
+      where: {
+        user_id,
+      },
+    });
+
+    if (!user_id || !user) {
+      return res.status(401).send();
+    }
+
+    const meals = await prisma.meals.findMany({
+      where: {
+        user_id,
+      },
+    });
+
+    return res.status(200).send({ data: { meals } });
+  });
 }
