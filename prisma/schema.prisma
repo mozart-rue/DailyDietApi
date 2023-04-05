@@ -16,6 +16,19 @@ model User {
     name String 
     email String @unique
     password_hash String
-    password_salt String
+
+    meals Meals[]
   }
 
+
+model Meals {
+    meal_id String @id @default(cuid())
+    name String
+    description String?
+    date_time DateTime
+    in_diet Boolean
+
+    user_id String 
+
+    user User @relation(fields: [user_id], references: [user_id])
+  }
