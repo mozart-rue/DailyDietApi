@@ -99,6 +99,7 @@ export async function Meals(app: FastifyInstance) {
     const meal = await prisma.meals.findFirst({
       where: {
         meal_id,
+        user_id,
       },
     });
 
@@ -132,15 +133,23 @@ export async function Meals(app: FastifyInstance) {
       return res.status(401).send();
     }
 
-    const meal = await prisma.meals.delete({
+    const meal = await prisma.meals.findFirst({
       where: {
         meal_id,
+        user_id,
       },
     });
 
     if (!meal) {
       return res.status(404).send();
     }
+
+    await prisma.meals.deleteMany({
+      where: {
+        user_id,
+        meal_id,
+      },
+    });
 
     return res.status(200).send();
   });
