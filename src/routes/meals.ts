@@ -108,4 +108,40 @@ export async function Meals(app: FastifyInstance) {
 
     return res.status(200).send({ data: { meal } });
   });
+
+  app.delete("/:meal_id", async (req, res) => {
+    const userIdHeaderSchema = z.object({
+      user_id: z.string(),
+    });
+
+    const mealIdParamSchema = z.object({
+      meal_id: z.string(),
+    });
+
+    const { user_id } = userIdHeaderSchema.parse(req.headers);
+
+    const { meal_id } = mealIdParamSchema.parse(req.params);
+
+    const user = await prisma.user.findFirst({
+      where: {
+        user_id,
+      },
+    });
+
+    if (!user_id || !user) {
+      return res.status(401).send();
+    }
+
+    const meal = await prisma.meals.delete({
+      where: {
+        meal_id,
+      },
+    });
+
+    if (!meal) {
+      return res.status(404).send();
+    }
+
+    return res.status(200).send();
+  });
 }
